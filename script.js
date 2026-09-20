@@ -8,7 +8,7 @@
      NAV: scrolled state + active link
   ============================================ */
   const nav = document.getElementById('nav');
-  const navLinks = document.querySelectorAll('.nav-link, .mobile-menu a');
+  const navLinks = document.querySelectorAll('.nav-link, .mobile-menu a, .mobile-dropdown-menu a');
   const sections = document.querySelectorAll('main section[id]');
   const dropdownButton = document.querySelector('#dropdownBtn');
   const dropdownMenu = document.querySelector('#dropdownMenu');
@@ -136,12 +136,25 @@
   ============================================ */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
+  const mobileDropdownBtn = document.getElementById('mobileDropdownBtn');
+  const mobileDropdownMenu = document.getElementById('mobileDropdownMenu');
+  const mobileProfileDropdown = document.getElementById('mobileProfileDropdown');
+
+  const closeMobileDropdown = () => {
+    if (mobileDropdownMenu && mobileProfileDropdown && mobileDropdownBtn) {
+      mobileDropdownMenu.classList.remove('show');
+      mobileProfileDropdown.classList.remove('is-open');
+      mobileDropdownMenu.hidden = true;
+      mobileDropdownBtn.setAttribute('aria-expanded', 'false');
+    }
+  };
 
   const closeMobileMenu = () => {
     hamburger.classList.remove('is-open');
     hamburger.setAttribute('aria-expanded', 'false');
     mobileMenu.classList.remove('is-open');
     document.body.style.overflow = '';
+    closeMobileDropdown();
   };
 
   hamburger.addEventListener('click', () => {
@@ -149,12 +162,32 @@
     hamburger.classList.toggle('is-open', isOpen);
     hamburger.setAttribute('aria-expanded', String(isOpen));
     document.body.style.overflow = isOpen ? 'hidden' : '';
-    if (isOpen && typeof closeDropdown === 'function') closeDropdown(false);
+    if (isOpen) {
+      if (typeof closeDropdown === 'function') closeDropdown(false);
+    } else {
+      closeMobileDropdown();
+    }
   });
 
   mobileMenu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeMobileMenu);
   });
+
+  /* ============================================
+     MOBILE DROPDOWN
+  ============================================ */
+  if (mobileDropdownBtn && mobileDropdownMenu && mobileProfileDropdown) {
+    mobileDropdownBtn.addEventListener('click', () => {
+      const isOpen = mobileDropdownMenu.classList.toggle('show');
+      mobileProfileDropdown.classList.toggle('is-open', isOpen);
+      mobileDropdownMenu.hidden = !isOpen;
+      mobileDropdownBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    mobileDropdownMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  }
 
   /* ============================================
      THEME TOGGLE
