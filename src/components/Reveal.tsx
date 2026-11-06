@@ -1,7 +1,25 @@
-import { useEffect, useRef } from 'react';
+import {
+  createElement,
+  useEffect,
+  useRef,
+  type ComponentPropsWithoutRef,
+  type ElementType,
+  type ReactNode,
+} from 'react';
 
-export default function Reveal({ as: Tag = 'div', className = '', children, ...props }) {
-  const ref = useRef(null);
+type RevealProps<T extends ElementType> = {
+  as?: T;
+  className?: string;
+  children?: ReactNode;
+} & Omit<ComponentPropsWithoutRef<T>, 'className' | 'children'>;
+
+export default function Reveal<T extends ElementType = 'div'>({
+  as,
+  className = '',
+  children,
+  ...props
+}: RevealProps<T>) {
+  const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -33,9 +51,9 @@ export default function Reveal({ as: Tag = 'div', className = '', children, ...p
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <Tag ref={ref} className={`reveal ${className}`.trim()} {...props}>
-      {children}
-    </Tag>
+  return createElement(
+    as ?? 'div',
+    { ...props, ref, className: `reveal ${className}`.trim() },
+    children
   );
 }

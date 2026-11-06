@@ -1,7 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import Reveal from './Reveal.jsx';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import Reveal from './Reveal';
 
-const SOCIALS = [
+type Social = {
+  href: string;
+  label: string;
+  icon: string;
+};
+
+const SOCIALS: Social[] = [
   { href: '#', label: 'GitHub', icon: 'fa-brands fa-github' },
   { href: '#', label: 'Facebook', icon: 'fa-brands fa-facebook' },
   { href: '#', label: 'LinkedIn', icon: 'fa-brands fa-linkedin' },
@@ -10,21 +16,28 @@ const SOCIALS = [
 
 const TARGET_EMAIL = 'your-email@example.com';
 
+const readField = (form: HTMLFormElement, name: string): string => {
+  const field = form.elements.namedItem(name);
+  return field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
+    ? field.value.trim()
+    : '';
+};
+
 export default function Contact() {
-  const [status, setStatus] = useState('');
-  const [submitLabel, setSubmitLabel] = useState('SEND MESSAGE');
-  const timeoutRef = useRef(null);
+  const [status, setStatus] = useState<string>('');
+  const [submitLabel, setSubmitLabel] = useState<string>('SEND MESSAGE');
+  const timeoutRef = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const name = form.elements.namedItem('name').value.trim();
-    const email = form.elements.namedItem('email').value.trim();
-    const subject = form.elements.namedItem('subject').value.trim();
-    const message = form.elements.namedItem('message').value.trim();
+    const name = readField(form, 'name');
+    const email = readField(form, 'email');
+    const subject = readField(form, 'subject');
+    const message = readField(form, 'message');
 
     if (!name || !email || !subject || !message) {
       setStatus('Please fill in every field before sending.');
@@ -75,7 +88,7 @@ export default function Contact() {
             </div>
             <div className="form-field">
               <label htmlFor="message">Message</label>
-              <textarea id="message" name="message" rows="5" required></textarea>
+              <textarea id="message" name="message" rows={5} required></textarea>
             </div>
             <button type="submit" className="btn btn-primary btn-submit">
               <span>{submitLabel}</span>

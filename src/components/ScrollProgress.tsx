@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function ScrollProgress() {
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState<number>(0);
 
   useEffect(() => {
     const updateProgress = () => {

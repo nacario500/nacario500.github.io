@@ -1,6 +1,11 @@
-import Reveal from './Reveal.jsx';
+import Reveal from './Reveal';
 
-const STATS = [
+type Stat = {
+  number: string;
+  label: string;
+};
+
+const STATS: Stat[] = [
   { number: '01+', label: 'Years Learning' },
   { number: '05+', label: 'Projects' },
   { number: '\u221e', label: 'Ideas to Build' },

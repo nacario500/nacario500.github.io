@@ -1,27 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
-import ScrollProgress from './components/ScrollProgress.jsx';
-import CustomCursor from './components/CustomCursor.jsx';
-import Navbar from './components/Navbar.jsx';
-import Hero from './components/Hero.jsx';
-import About from './components/About.jsx';
-import Skills from './components/Skills.jsx';
-import Projects from './components/Projects.jsx';
-import Journey from './components/Journey.jsx';
-import Contact from './components/Contact.jsx';
-import Footer from './components/Footer.jsx';
+import ScrollProgress from './components/ScrollProgress';
+import CustomCursor from './components/CustomCursor';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import About from './components/About';
+import Skills from './components/Skills';
+import Projects from './components/Projects';
+import Journey from './components/Journey';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import type { Theme } from './types';
 
 const THEME_KEY = 'jcn-portfolio-theme';
 
-const readStoredTheme = () => {
+const readStoredTheme = (): Theme => {
   try {
-    return localStorage.getItem(THEME_KEY) || 'dark';
-  } catch (e) {
+    return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
+  } catch {
     return 'dark';
   }
 };
 
 export default function App() {
-  const [theme, setTheme] = useState(readStoredTheme);
+  const [theme, setTheme] = useState<Theme>(readStoredTheme);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -29,7 +30,7 @@ export default function App() {
     else root.removeAttribute('data-theme');
     try {
       localStorage.setItem(THEME_KEY, theme);
-    } catch (e) {
+    } catch {
       /* storage unavailable — theme still applies for this session */
     }
   }, [theme]);

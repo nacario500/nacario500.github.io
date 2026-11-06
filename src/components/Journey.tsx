@@ -1,6 +1,11 @@
-import Reveal from './Reveal.jsx';
+import Reveal from './Reveal';
 
-const TIMELINE = [
+type TimelineItem = {
+  tag: string;
+  text: string;
+};
+
+const TIMELINE: TimelineItem[] = [
   { tag: 'START', text: 'Started learning programming and web development.' },
   { tag: 'LEARNING', text: 'Explored HTML, CSS, JavaScript, UI/UX, and databases.' },
   { tag: 'BUILDING', text: 'Started creating real-world web applications and school projects.' },

@@ -1,6 +1,20 @@
-import Reveal from './Reveal.jsx';
+import type { CSSProperties } from 'react';
+import Reveal from './Reveal';
 
-const PROJECTS = [
+type PreviewVariant = 'dashboard' | 'landing' | 'chart';
+
+type Project = {
+  index: string;
+  category: string;
+  title: string;
+  description: string;
+  tech: string[];
+  preview: PreviewVariant;
+  demoLabel: string;
+  secondLabel: string;
+};
+
+const PROJECTS: Project[] = [
   {
     index: '01',
     category: 'Web Application',
@@ -33,7 +47,9 @@ const PROJECTS = [
   },
 ];
 
-function MockPreview({ variant }) {
+const barStyle = (height: string): CSSProperties => ({ '--h': height } as CSSProperties);
+
+function MockPreview({ variant }: { variant: PreviewVariant }) {
   return (
     <div className={`mock-ui mock-ui--${variant}`} aria-hidden="true">
       <div className="mock-topbar"><span></span><span></span><span></span></div>
@@ -61,11 +77,11 @@ function MockPreview({ variant }) {
         {variant === 'chart' && (
           <>
             <div className="mock-grid-vis">
-              <div className="mock-bar" style={{ '--h': '40%' }}></div>
-              <div className="mock-bar" style={{ '--h': '70%' }}></div>
-              <div className="mock-bar" style={{ '--h': '55%' }}></div>
-              <div className="mock-bar" style={{ '--h': '85%' }}></div>
-              <div className="mock-bar" style={{ '--h': '35%' }}></div>
+              <div className="mock-bar" style={barStyle('40%')}></div>
+              <div className="mock-bar" style={barStyle('70%')}></div>
+              <div className="mock-bar" style={barStyle('55%')}></div>
+              <div className="mock-bar" style={barStyle('85%')}></div>
+              <div className="mock-bar" style={barStyle('35%')}></div>
             </div>
             <div className="mock-line"></div>
           </>

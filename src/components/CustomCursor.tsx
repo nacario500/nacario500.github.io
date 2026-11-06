@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 const INTERACTIVE_SELECTOR = 'a, button, input, textarea, .project-card, .skill-card';
 
 export default function CustomCursor() {
-  const dotRef = useRef(null);
-  const ringRef = useRef(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -25,7 +25,7 @@ export default function CustomCursor() {
     let ringY = mouseY;
     let frameId = 0;
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
       dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
@@ -38,18 +38,19 @@ export default function CustomCursor() {
       frameId = requestAnimationFrame(animateRing);
     };
 
-    const handleMouseOver = (e) => {
-      if (e.target.closest && e.target.closest(INTERACTIVE_SELECTOR)) {
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (target?.closest(INTERACTIVE_SELECTOR)) {
         ring.classList.add('is-active');
       }
     };
 
-    const handleMouseOut = (e) => {
-      const from = e.target.closest ? e.target.closest(INTERACTIVE_SELECTOR) : null;
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      const from = target?.closest(INTERACTIVE_SELECTOR) ?? null;
       if (!from) return;
-      const to = e.relatedTarget && e.relatedTarget.closest
-        ? e.relatedTarget.closest(INTERACTIVE_SELECTOR)
-        : null;
+      const related = e.relatedTarget as Element | null;
+      const to = related?.closest(INTERACTIVE_SELECTOR) ?? null;
       if (to !== from) ring.classList.remove('is-active');
     };
 

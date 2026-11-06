@@ -1,6 +1,13 @@
-import Reveal from './Reveal.jsx';
+import Reveal from './Reveal';
 
-const SKILLS = [
+type Skill = {
+  num: string;
+  icon: string;
+  title: string;
+  description: string;
+};
+
+const SKILLS: Skill[] = [
   { num: '01', icon: 'fa-brands fa-html5', title: 'HTML5', description: 'Semantic structure and accessible web development.' },
   { num: '02', icon: 'fa-brands fa-css3-alt', title: 'CSS3', description: 'Responsive layouts, animations, and modern visual design.' },
   { num: '03', icon: 'fa-brands fa-js', title: 'JavaScript', description: 'Interactive interfaces and dynamic web applications.' },

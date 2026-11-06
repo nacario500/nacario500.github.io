@@ -1,21 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
-import MobileMenu from './MobileMenu.jsx';
+import MobileMenu from './MobileMenu';
+import type { Theme } from '../types';
 
-const PROFILE_LINKS = [
+type NavbarProps = {
+  theme: Theme;
+  onToggleTheme: () => void;
+};
+
+type ProfileLink = {
+  id: string;
+  label: string;
+};
+
+const PROFILE_LINKS: ProfileLink[] = [
   { id: 'about', label: 'About Me' },
   { id: 'skills', label: 'Skills & Tools' },
   { id: 'journey', label: 'My Journey' },
 ];
 
-const PROFILE_IDS = PROFILE_LINKS.map((link) => link.id);
+const PROFILE_IDS: string[] = PROFILE_LINKS.map((link) => link.id);
 
-export default function Navbar({ theme, onToggleTheme }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('home');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const dropdownButtonRef = useRef(null);
+export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const [active, setActive] = useState<string>('home');
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -45,10 +56,10 @@ export default function Navbar({ theme, onToggleTheme }) {
     if (!dropdownOpen) return undefined;
 
     const dropdownNode = dropdownRef.current;
-    const onDocumentClick = (e) => {
-      if (dropdownNode && !dropdownNode.contains(e.target)) setDropdownOpen(false);
+    const onDocumentClick = (e: MouseEvent) => {
+      if (dropdownNode && !dropdownNode.contains(e.target as Node)) setDropdownOpen(false);
     };
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         setDropdownOpen(false);

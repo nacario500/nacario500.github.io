@@ -1,20 +1,32 @@
 import { useEffect, useState } from 'react';
 
+type MobileMenuProps = {
+  open: boolean;
+  onClose: () => void;
+  active: string;
+};
+
+type Social = {
+  href: string;
+  label: string;
+  icon: string;
+};
+
 const PROFILE_LINKS = [
   { id: 'about', label: 'About Me' },
   { id: 'skills', label: 'Skills & Tools' },
   { id: 'journey', label: 'My Journey' },
 ];
 
-const SOCIALS = [
+const SOCIALS: Social[] = [
   { href: '#', label: 'GitHub', icon: 'fa-brands fa-github' },
   { href: '#', label: 'Facebook', icon: 'fa-brands fa-facebook' },
   { href: '#', label: 'LinkedIn', icon: 'fa-brands fa-linkedin' },
   { href: 'mailto:your-email@example.com', label: 'Email', icon: 'fa-solid fa-envelope' },
 ];
 
-export default function MobileMenu({ open, onClose, active }) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+export default function MobileMenu({ open, onClose, active }: MobileMenuProps) {
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';

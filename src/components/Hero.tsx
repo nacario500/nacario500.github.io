@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useRef } from 'react';
-import Reveal from './Reveal.jsx';
+import { Fragment, useEffect, useRef, type ReactNode } from 'react';
+import Reveal from './Reveal';
 
-const CODE_LINES = [
+const CODE_LINES: ReactNode[] = [
   <>
     <span className="tk-key">const</span> <span className="tk-var">developer</span> = {'{'}
   </>,
@@ -20,8 +20,8 @@ const CODE_LINES = [
 ];
 
 export default function Hero() {
-  const heroRef = useRef(null);
-  const glowRef = useRef(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -32,7 +32,7 @@ export default function Hero() {
     const glow = glowRef.current;
     if (!hero || !glow) return undefined;
 
-    const onMouseMove = (e) => {
+    const onMouseMove = (e: MouseEvent) => {
       const rect = hero.getBoundingClientRect();
       glow.style.setProperty('--x', `${e.clientX - rect.left}px`);
       glow.style.setProperty('--y', `${e.clientY - rect.top}px`);
